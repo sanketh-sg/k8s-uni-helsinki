@@ -15,3 +15,6 @@ spec:
       containers:
       - name: log-output-app
         image: sankethdhub08/log-output-app:latest
+        ports:
+        - containerPort: 3000
+
