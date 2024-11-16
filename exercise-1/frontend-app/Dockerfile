@@ -5,7 +5,7 @@ FROM node:20-alpine
 RUN npm install -g pnpm
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy package.json and install dependencies
 COPY package*.json ./
