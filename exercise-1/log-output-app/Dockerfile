@@ -17,4 +17,7 @@ RUN pnpm install
 COPY . .
 
 # Run the web service on container startup.
-CMD [ "node", "main.js" ]
+CMD [ "node", "server.js" ]
+
+#Expose the port
+EXPOSE 3000
