@@ -15,6 +15,7 @@ spec:
       containers:
       - name: log-output-app
         image: sankethdhub08/log-output-app:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
 
