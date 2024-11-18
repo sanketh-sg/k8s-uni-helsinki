@@ -25,3 +25,10 @@ spec:
                 name: log-output-app-service
                 port:
                   number: 80
+          - path: /pingpong
+            pathType: Prefix
+            backend:
+              service:
+                name: ping-pong-app-service
+                port:
+                  number: 82
