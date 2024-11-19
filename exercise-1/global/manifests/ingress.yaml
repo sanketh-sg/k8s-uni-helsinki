@@ -11,13 +11,6 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/hi
-            pathType: Prefix
-            backend:
-              service:
-                name: log-output-app-service
-                port:
-                  number: 80
           - path: /api/status
             pathType: Prefix
             backend:

@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start:timestamp": "node log-generator.js",
+    "start:reader": "node hash-reader.js",
+    "start": "concurrently \"npm run start:timestamp\" \"npm run start:reader\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "concurrently": "^9.1.0"
   }
 }

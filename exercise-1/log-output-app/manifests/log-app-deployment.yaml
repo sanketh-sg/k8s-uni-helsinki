@@ -13,9 +13,19 @@ spec:
         app: log-output-app
     spec:
       containers:
-      - name: log-output-app
-        image: sankethdhub08/log-output-app:latest
-        imagePullPolicy: Always
+      - name: timestamp-generator
+        image: sankethdhub08/log-gen:latest
+        volumeMounts:
+        - name: shared-data
+          mountPath: /app/shared
+      - name: log-reader
+        image: sankethdhub08/hash-gen:latest
         ports:
         - containerPort: 3000
+        volumeMounts:
+        - name: shared-data
+          mountPath: /app/shared
+      volumes:
+      - name: shared-data
+        emptyDir: {}
 
