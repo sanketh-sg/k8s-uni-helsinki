@@ -15,17 +15,23 @@ spec:
       containers:
       - name: timestamp-generator
         image: sankethdhub08/log-gen:latest
+        imagePullPolicy: Always
         volumeMounts:
-        - name: shared-data
+        - name: shared-data-pv
           mountPath: /app/shared
       - name: log-reader
         image: sankethdhub08/hash-gen:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         volumeMounts:
-        - name: shared-data
+        - name: shared-data-pv
           mountPath: /app/shared
       volumes:
-      - name: shared-data
-        emptyDir: {}
+      - name: shared-data-pv
+        persistentVolumeClaim:
+          claimName: shared-pvc
+      # volumes:
+      # - name: shared-data
+      #   emptyDir: {}
 

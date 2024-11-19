@@ -1,11 +1,12 @@
 #!/bin/sh
 
-FILE=/app/shared/timestamp.txt
+LOG_FILE=/app/shared/timestamp.txt
+PING_FILE=/app/shared/pingpong-count.txt
 
 # Wait until the file exists
-echo "Waiting for the file: $FILE"
-while [ ! -f "$FILE" ]; do
+echo "Waiting for the file: $LOG_FILE \& $PING_FILE"
+while [ ! -f "$LOG_FILE" ] && [! -f "$PING_FILE"]; do
   sleep 1
 done
 
-echo "$FILE detected. Starting hash reader application..."
+echo "$LOG_FILE \& $PING_FILE detected. Starting hash reader application..."

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-pvc # Shared by log app and ping-pong app
+spec:
+  accessModes:
+    - ReadWriteOnce # One pod can read and write to this PVC
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: manual

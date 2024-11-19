@@ -3,22 +3,34 @@ const path = require('path');
 const crypto = require('crypto');
 const express = require('express');
 
-const filePath = path.join('/app/shared', 'timestamp.txt');
+const logfilePath = path.join('/app/shared','timestamp.txt');
+const pingfilePath = path.join('/app/shared','pingpong-count.txt');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 function readTimestamp() {
-  if (fs.existsSync(filePath)) {
-    const timestamp = fs.readFileSync(filePath, 'utf8');
+
+  if (fs.existsSync(logfilePath) && fs.existsSync(pingfilePath)) {
+    const timestamp = fs.readFileSync(logfilePath, 'utf8');
+
+    const count = fs.readFileSync(pingfilePath, 'utf8');
+
     const hash = crypto.createHash('sha256').update(timestamp).digest('hex');
-    return { timestamp, hash };
+
+    return { timestamp, hash, count };
   } else {
-    return { error: 'Timestamp file not found' };
+    return { error: 'Timestamp and Ping files not found' };
   }
 }
 
 app.get('/api/status', (req, res) => {
-  res.json(readTimestamp());
+    let { timestamp, hash, count, error } = readTimestamp();
+    
+  if (error) {
+    res.status(500).send(error);
+    } else {
+    res.send(`${timestamp}: ${hash}<br>Ping / Pongs: ${count}`);
+    }
 });
 
 app.listen(PORT, () => {

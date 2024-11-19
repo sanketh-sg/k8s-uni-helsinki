@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: shared-data-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce # Only one pod can read/write to the volume
+  persistentVolumeReclaimPolicy: Retain # Retain the volume even after the claim is deleted
+  storageClassName: manual 
+  hostPath:
+    path: "/mnt/data" # Path on the host machine where the volume is stored
+    type: DirectoryOrCreate # Create the directory if it doesn't exist
