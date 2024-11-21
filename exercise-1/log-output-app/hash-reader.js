@@ -3,11 +3,19 @@ const path = require('path');
 const crypto = require('crypto');
 const express = require('express');
 
-const logfilePath = path.join('/app/shared','timestamp.txt');
-const pingfilePath = path.join('/app/shared','pingpong-count.txt');
-const imageDir = path.dirname('/app/images')
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const logfilePath = path.join('/app/shared','timestamp.txt');
+const pingfilePath = path.join("/app/shared",'pingpong-count.txt');
+// Serve static files from the public folder
+app.use(express.static(path.join(__dirname, "public")));
+
+// Serve static files from the shared folder
+app.use("/shared", express.static(path.join(__dirname, "shared")));
+
+
 
 function readTimestamp() {
 
@@ -36,15 +44,17 @@ app.get('/api/status', (req, res) => {
     }
 });
 
-app.get('/', (req, res) => {
-    const image = fs.readdirSync(imageDir);
-    const latestImage = image.sort().pop(); // Get the latest file based on timestamp
-    if (latestImage) {
-      res.sendFile(path.join(imageDir, latestImage));
-    } else {
-      res.status(404).send('No images found');
-    }
-  });
+app.get("/latest-image", (req, res) => {
+  const imagePath = path.join(__dirname, "shared", "latest-image.jpg");
+  res.sendFile(imagePath);
+});
+
+// Serve the latest image at `/`
+app.get("/", (req, res) => {
+
+  res.sendFile(path.join(__dirname,"public", "index.html"));
+});
+
 
 app.listen(PORT, () => {
   console.log(`Log reader running on http://localhost:${PORT}`);
