@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nfs-provisioner-configmap
+data:
+  provisioner.conf: |
+    PROVISIONER_NAME: example.com/nfs
+    NFS_SERVER: nfs-server-service.default.svc.cluster.local
+    NFS_PATH: /nfs/shared

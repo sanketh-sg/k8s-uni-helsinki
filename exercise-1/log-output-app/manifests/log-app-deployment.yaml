@@ -12,6 +12,13 @@ spec:
       labels:
         app: log-output-app
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: ping-pong-app
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - name: timestamp-generator
         image: sankethdhub08/log-gen:latest
