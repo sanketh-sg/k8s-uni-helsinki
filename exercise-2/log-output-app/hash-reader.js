@@ -2,40 +2,21 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const express = require('express');
-
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const logfilePath = path.join('/app/shared','timestamp.txt');
-//const pingfilePath = path.join("/app/shared",'pingpong-count.txt');
+
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
-
-// Serve static files from the shared folder
-app.use("/shared", express.static(path.join(__dirname, "shared")));
-
-
-
-function readTimestamp() {
-
-  if (fs.existsSync(logfilePath) && fs.existsSync(pingfilePath)) {
-    const timestamp = fs.readFileSync(logfilePath, 'utf8');
-
-    const count = fs.readFileSync(pingfilePath, 'utf8');
-
-    const hash = crypto.createHash('sha256').update(timestamp).digest('hex');
-
-    return { timestamp, hash, count };
-  } else {
-    return { error: 'Timestamp and Ping files not found' };
-  }
-}
 
 
 async function fetchPongCount() {
   try {
-    const response = await axios.get('http://localhost:4000/pingpong'); // Ping-Pong app endpoint
+    const response = await axios.get('http://ping-pong-app-service:82/pingpong'); // Ping-Pong app endpoint
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching ping-pong count:', error);
@@ -45,14 +26,16 @@ async function fetchPongCount() {
 
 
 //Routes
-app.get('/api/status', (req, res) => {
-    let { timestamp, hash, count, error } = readTimestamp();
-    
-  if (error) {
-    res.status(500).send(error);
-    } else {
-    res.send(`${timestamp}: ${hash}<br>Ping / Pongs: ${count}`);
-    }
+app.get('/api/status', async (req, res) => {
+  try {
+    const pongCount = await fetchPongCount(); // Fetch the ping-pong count from Ping-Pong app
+    const timestamp = fs.existsSync(logfilePath) ? fs.readFileSync(logfilePath, 'utf8') : 'No timestamp found';
+    const hash = crypto.createHash('sha256').update(timestamp).digest('hex');
+
+    res.send(`${timestamp}: ${hash}<br>Ping / Pongs: ${pongCount}`);
+  } catch (error) {
+    res.status(500).send('Error fetching status');
+  }
 });
 
 app.get("/latest-image", (req, res) => {
@@ -62,7 +45,6 @@ app.get("/latest-image", (req, res) => {
 
 // Serve the latest image at `/`
 app.get("/", (req, res) => {
-
   res.sendFile(path.join(__dirname,"public", "index.html"));
 });
 

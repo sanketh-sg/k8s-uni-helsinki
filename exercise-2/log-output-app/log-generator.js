@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 
-//const filePath = path.join('/app/shared', 'timestamp.txt');
-//const imageFilePath = path.join('/app/shared', 'latest-image.jpg');
+const filePath = path.join('/app/shared', 'timestamp.txt');
+const imageFilePath = path.join('/app/shared', 'latest-image.jpg');
 
 function generateTimestamp() {
   const timestamp = new Date().toISOString();
@@ -29,4 +29,4 @@ async function fetchAndSaveImage() {
   }
 }
 
-setInterval(fetchAndSaveImage, 3600000); // Fetch a new image every hour
+setInterval(fetchAndSaveImage, 600000); // Fetch a new image every 10 minutes

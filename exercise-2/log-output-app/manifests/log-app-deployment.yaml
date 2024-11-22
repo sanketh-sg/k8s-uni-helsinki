@@ -21,13 +21,13 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
       - name: timestamp-generator
-        image: sankethdhub08/log-gen:latest
+        image: sankethdhub08/log-gen:v2
         imagePullPolicy: Always
         volumeMounts:
         - name: shared-data-pv
           mountPath: /app/shared
       - name: log-reader
-        image: sankethdhub08/hash-gen:latest
+        image: sankethdhub08/hash-gen:v2
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

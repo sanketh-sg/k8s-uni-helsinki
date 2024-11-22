@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ping-pong-app
-        image: sankethdhub08/ping-pong-app:latest
+        image: sankethdhub08/ping-pong-app:v2
         imagePullPolicy: Always
         ports:
         - containerPort: 4000
