@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: log-output-app-ingress
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: /api/hi  
+    #used by the NGINX Ingress Controller to modify the path of the incoming request 
+    #before forwarding it to the backend service.
+    #the request should contain this patch to rewrite. /api/hi/anything
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: log-output-app-service
+                port:
+                  number: 80
+          - path: /api/status
+            pathType: Prefix
+            backend:
+              service:
+                name: log-output-app-service
+                port:
+                  number: 80
+          - path: /pingpong
+            pathType: Prefix
+            backend:
+              service:
+                name: ping-pong-app-service
+                port:
+                  number: 82

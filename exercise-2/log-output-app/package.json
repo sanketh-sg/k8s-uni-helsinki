@@ -1,0 +1,20 @@
+{
+  "name": "log-output-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:timestamp": "node log-generator.js",
+    "start:reader": "node hash-reader.js",
+    "start": "concurrently \"npm run start:timestamp\" \"npm run start:reader\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "concurrently": "^9.1.0",
+    "express": "^4.21.1"
+  }
+}
