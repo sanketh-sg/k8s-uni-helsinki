@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: log-output-app-ingress
   annotations:
-    # nginx.ingress.kubernetes.io/rewrite-target: /api/hi  
+    # nginx.ingress.kubernetes.io/rewrite-target: / 
     #used by the NGINX Ingress Controller to modify the path of the incoming request 
     #before forwarding it to the backend service.
     #the request should contain this patch to rewrite. /api/hi/anything
@@ -15,9 +15,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: log-output-app-service
+                name: todo-frontend-service
                 port:
-                  number: 80
+                  number: 84
           - path: /api/status
             pathType: Prefix
             backend:
@@ -32,3 +32,17 @@ spec:
                 name: ping-pong-app-service
                 port:
                   number: 82
+          - path: /todos
+            pathType: Prefix
+            backend:
+              service:
+                name: todo-backend-service
+                port:
+                  number: 86
+          - path: /latest-image
+            pathType: Prefix
+            backend:
+              service:
+                name: todo-backend-service
+                port:
+                  number: 86

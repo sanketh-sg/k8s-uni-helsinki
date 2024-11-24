@@ -24,23 +24,20 @@
     <!-- Todo Section -->
     <div class="todo-section">
       <h2>Todo List</h2>
-      <div class="todo-input">
+
+      <!-- Todo Form to Add a New Todo -->
+      <form id="todo-form">
         <input
           type="text"
           id="todo-input"
           placeholder="Enter a todo (max 140 characters)"
           maxlength="140"
         />
-        <button id="todo-send">Send</button>
-      </div>
-      <ul id="todo-list">
-        <!-- Hardcoded Todos -->
-        <li>Learn about Kind clusters</li>
-        <li>Deploy logoutapp</li>
-        <li>Test pinpong app</li>
-      </ul>
+        <button type="submit">Add Todo</button>
+      </form>
     </div>
   </div>
-  <script src="script.js"></script>
+
+  <script src="todo.js"></script> <!-- Separate script file -->
 </body>
 </html>
