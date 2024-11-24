@@ -31,8 +31,9 @@ app.get('/api/status', async (req, res) => {
     const pongCount = await fetchPongCount(); // Fetch the ping-pong count from Ping-Pong app
     const timestamp = fs.existsSync(logfilePath) ? fs.readFileSync(logfilePath, 'utf8') : 'No timestamp found';
     const hash = crypto.createHash('sha256').update(timestamp).digest('hex');
-
-    res.send(`${timestamp}: ${hash}<br>Ping / Pongs: ${pongCount}`);
+    const text = fs.existsSync("/app/config/information.txt") ? fs.readFileSync("/app/config/information.txt", 'utf8') : 'No information found';
+    const message = process.env.MESSAGE
+    res.send(`file content: ${text}<br>${message} <br>${timestamp}: ${hash}<br>Ping / Pongs: ${pongCount}`);
   } catch (error) {
     res.status(500).send('Error fetching status');
   }
