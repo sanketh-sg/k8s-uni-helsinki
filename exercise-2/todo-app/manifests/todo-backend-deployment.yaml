@@ -4,6 +4,7 @@ metadata:
   name: todo-backend-deployment
   labels:
     app: todo-backend
+  namespace: todo-app
 spec:
   replicas: 1
   selector:

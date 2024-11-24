@@ -11,13 +11,6 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: todo-frontend-service
-                port:
-                  number: 84
           - path: /api/status
             pathType: Prefix
             backend:
@@ -32,17 +25,3 @@ spec:
                 name: ping-pong-app-service
                 port:
                   number: 82
-          - path: /todos
-            pathType: Prefix
-            backend:
-              service:
-                name: todo-backend-service
-                port:
-                  number: 86
-          - path: /latest-image
-            pathType: Prefix
-            backend:
-              service:
-                name: todo-backend-service
-                port:
-                  number: 86

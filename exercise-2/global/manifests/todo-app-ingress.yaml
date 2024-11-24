@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-app-ingress
+  namespace: todo-app
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: / 
+    #used by the NGINX Ingress Controller to modify the path of the incoming request 
+    #before forwarding it to the backend service.
+    #the request should contain this patch to rewrite. /api/hi/anything
+    namespace: todo-app
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: todo-frontend-service
+                port:
+                  number: 84
+          - path: /todos
+            pathType: Prefix
+            backend:
+              service:
+                name: todo-backend-service
+                port:
+                  number: 86
+          - path: /latest-image
+            pathType: Prefix
+            backend:
+              service:
+                name: todo-backend-service
+                port:
+                  number: 86
