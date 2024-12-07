@@ -14,10 +14,16 @@ spec:
     spec:
       containers:
       - name: ping-pong-app
-        image: sankethdhub08/ping-pong-app:v2
+        image: sankethdhub08/ping-pong-app:v3
         imagePullPolicy: Always
         ports:
         - containerPort: 4000
+        env:
+        - name: POSTGRES_URL
+          valueFrom:
+            secretKeyRef:
+              name: pingpong-secret
+              key: POSTGRES_URL
         volumeMounts:
         - name: shared-data-pv
           mountPath: /app/shared
