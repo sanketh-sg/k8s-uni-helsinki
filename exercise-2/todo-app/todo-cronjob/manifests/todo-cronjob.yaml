@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: todo-cronjob
+  namespace: todo-app
+spec:
+  schedule: "0 * * * *"  
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: generate-todo
+            image: sankethdhub08/todo-generator:v1
+            imagePullPolicy: Always
+          restartPolicy: OnFailure
