@@ -24,6 +24,13 @@ spec:
             secretKeyRef:
               name: pingpong-secret
               key: POSTGRES_URL
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
         volumeMounts:
         - name: shared-data-pv
           mountPath: /app/shared

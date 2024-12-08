@@ -28,7 +28,9 @@ const ensureTableExists = async () => {
       id SERIAL PRIMARY KEY,
       count INT NOT NULL
     );
-    INSERT INTO pingpong (id, count) VALUES (1, 0);
+    INSERT INTO pingpong (id, count)
+    SELECT 1, 0
+    WHERE NOT EXISTS (SELECT 1 FROM pingpong WHERE id = 1);
   `;
   try {
     await client.query(createTableQuery);
@@ -59,6 +61,10 @@ app.get('/pingpong', async (req, res) => {
     console.error('Error accessing database:', err);
     res.status(500).send('Internal Server Error');
   }
+});
+
+app.get('/ping', async (req, res) => {
+  res.send('pong');
 });
 
 
