@@ -17,6 +17,14 @@ spec:
     spec:
       containers:
       - name: todo-backend
-        image: sankethdhub08/todo-backend:latest
+        image: sankethdhub08/todo-backend:v2
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3

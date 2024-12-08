@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
       - name: todo-frontend
-        image: sankethdhub08/react-todo-frontend:latest
+        image: sankethdhub08/react-todo-frontend:v2
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
