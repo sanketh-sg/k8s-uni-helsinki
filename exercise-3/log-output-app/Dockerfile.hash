@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN pnpm install
+
+COPY hash-reader.js ./
+COPY public ./public
+
+CMD ["pnpm", "start:reader"]
+
+EXPOSE 3000

@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: my-application-rollout
+  namespace: todo-app
+spec:
+  replicas: 3
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - pause:
+            duration: 10m
+        - setWeight: 50
+        - pause:
+            duration: 10m
+        - setWeight: 75
+        - pause:
+            duration: 10m
+        - setWeight: 100
+        - analysis:
+            templateName: cpu-usage-check  # Attach the AnalysisTemplate
+            interval: 10m
+            successCondition: 'result < 0.5'  # Success condition
+            failureCondition: 'result >= 0.5'  # Failure condition for rollback
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+        - name: todo-app
+          image: sankethdhub08/todo-app:v3
+          ports:
+            - containerPort: 5000

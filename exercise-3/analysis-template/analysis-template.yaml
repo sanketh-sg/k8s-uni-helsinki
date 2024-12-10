@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: cpu-usage-check
+  namespace: argo-rollouts  # Make sure to use your namespace
+spec:
+  metrics:
+    - name: cpu-usage
+      interval: 10m  # Check every 10 minutes
+      successCondition: 'result < 0.5'  # The sum of CPU usage should be less than 0.5 cores
+      failureCondition: 'result >= 0.5'  # If it exceeds 0.5 cores, it will fail
+      provider:
+        prometheus:
+          address: 'http://prometheus.monitoring.svc.cluster.local:9090'  # Point to your Prometheus service
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{namespace="your-namespace"}[1m])) by (namespace)
+          metricName: cpu_usage
+          threshold: 0.5  # Define the threshold for acceptable CPU usage (in cores)

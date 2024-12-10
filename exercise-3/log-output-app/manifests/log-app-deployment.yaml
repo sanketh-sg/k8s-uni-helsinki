@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output-app
+  template:
+    metadata:
+      labels:
+        app: log-output-app
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: ping-pong-app
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: timestamp-generator
+        image: sankethdhub08/log-gen:v2
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: shared-data-pv
+          mountPath: /app/shared
+      - name: log-reader
+        image: sankethdhub08/hash-gen:v2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env: 
+        - name: MESSAGE
+          valueFrom:
+            configMapKeyRef:
+              name: log-app-configmap
+              key: MESSAGE
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+          readOnly: true
+        - name: shared-data-pv
+          mountPath: /app/shared
+      volumes:
+      - name: shared-data-pv
+        persistentVolumeClaim:
+          claimName: shared-pvc
+      - name: config-volume
+        configMap:
+          name: log-app-configmap
+      # volumes:
+      # - name: shared-data
+      #   emptyDir: {}
+
